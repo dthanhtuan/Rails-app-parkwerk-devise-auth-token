@@ -2,12 +2,12 @@
 # https://github.com/Shopify/packwerk/blob/main/USAGE.md#configuring-packwerk
 
 # List of patterns for folder paths to include
-# include:
-# - "**/*.{rb,rake,erb}"
+include# include:
+ - "**/*.{rb,rake,erb}"
 
 # List of patterns for folder paths to exclude
-# exclude:
-# - "{bin,node_modules,script,tmp,vendor}/**/*"
+exclude# exclude:
+ - "{bin,node_modules,script,tmp,vendor}/**/*"
 
 # Patterns to find package configuration files
 # package_paths: "**/"
