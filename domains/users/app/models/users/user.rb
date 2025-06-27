@@ -31,7 +31,6 @@ module Users
     end
 
     def confirm_by_code!(confirmation_code)
-
       return false unless confirmation_code_valid?(confirmation_code)
 
       update!(
