@@ -17,7 +17,7 @@ class User < ApplicationRecord
     return unless can_resend_confirmation_code_email?
 
     self.confirmation_code = SecureRandom.hex(6).upcase
-    self.confirmation_code_sent_at = Time.current
+    self.confirmation_code_sent_at = Time.zone.now
     save(validate: false)
     ConfirmationCodeMailer.confirmation_code_email(self.email, self.confirmation_code).deliver_later
   end
@@ -33,7 +33,7 @@ class User < ApplicationRecord
     return false unless confirmation_code_valid?(confirmation_code)
 
     update(
-      confirmed_at: Time.current,
+      confirmed_at: Time.zone.now,
       confirmation_code: nil,
       confirmation_code_sent_at: nil
     )
@@ -47,4 +47,3 @@ class User < ApplicationRecord
     self.confirmation_code_sent_at < CONFIRMATION_CODE_EXPIRATION_TIME
   end
 end
-
