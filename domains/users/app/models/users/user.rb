@@ -8,7 +8,7 @@ module Users
 
     # Validations
     validates :email, presence: true, uniqueness: true
-    validates :password, presence: true, length: { minimum: 6 }
+    validates :password, presence: true, length: { minimum: 6 }, if: :password_required?
 
     before_validation do
       self.uid = email if uid.blank?
@@ -31,14 +31,16 @@ module Users
     end
 
     def confirm_by_code!(confirmation_code)
+
       return false unless confirmation_code_valid?(confirmation_code)
 
-      update(
+      update!(
         confirmed_at: Time.zone.now,
         confirmation_code: nil,
         confirmation_code_sent_at: nil
       )
       confirm
+      true
     end
 
     private

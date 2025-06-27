@@ -7,9 +7,9 @@ module Users
         render json: { error: 'User not found' }, status: :not_found and return
       end
 
-      if user.confirmed?
-        render json: { message: 'User already confirmed' }, status: :ok and return
-      end
+      # if user.confirmed?
+      #   render json: { message: 'User already confirmed' }, status: :ok and return
+      # end
 
       confirmation_code = params[:confirmation_code]
       if user.present? && user.confirm_by_code!(confirmation_code)
