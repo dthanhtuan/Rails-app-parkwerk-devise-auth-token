@@ -1,5 +1,8 @@
 module Users
   class User < ApplicationRecord
+    extend Devise::Models
+    include DeviseTokenAuth::Concerns::User
+
     CONFIRMATION_CODE_EXPIRATION_TIME = 10.minutes.ago
 
     devise :database_authenticatable, :registerable,

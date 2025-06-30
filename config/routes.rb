@@ -1,22 +1,22 @@
 Rails.application.routes.draw do
   get "home/index"
-  mount_devise_token_auth_for "Users::User", at: "auth"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  mount_devise_token_auth_for "Users::User", at: "auth", skip: [:sessions, :registrations, :passwords, :confirmations, :omniauth_callbacks]
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  devise_scope :users_user do
+    post '/register', to: 'devise_token_auth/registrations#create', as: :user_registration
+    post '/sign_in', to: 'devise_token_auth/sessions#create', as: :register
+    delete '/sign_out', to: 'devise_token_auth/sessions#destroy', as: :destroy_user_session
+    post '/verify-email', to: 'users/confirmations#confirm_registration', as: :confirm_registration
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
   root "rails/welcome#index"
 
-  resources :home, only: [ :index ]
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-
   draw :users
   draw :vouchers
+
+  resources :home, only: [ :index ]
+
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end
