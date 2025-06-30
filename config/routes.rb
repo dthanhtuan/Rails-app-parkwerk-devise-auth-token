@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     post '/sign_in', to: 'devise_token_auth/sessions#create', as: :register
     delete '/sign_out', to: 'devise_token_auth/sessions#destroy', as: :destroy_user_session
     # Email confirmation routes
-    post '/verify-email', to: 'users/confirmations#confirm_registration', as: :confirm_registration
+    post '/verify-email', to: 'users/confirmations#confirm_registration', as: :verify_email
     post '/resend-confirmation', to: 'users/confirmations#create', as: :resend_confirmation_instructions
   end
 

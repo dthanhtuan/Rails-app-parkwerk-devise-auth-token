@@ -3,7 +3,7 @@ module Users
     extend Devise::Models
     include DeviseTokenAuth::Concerns::User
 
-    CONFIRMATION_CODE_EXPIRATION_TIME = 10.minutes.ago
+    CONFIRMATION_CODE_EXPIRATION_PERIOD = 10.minutes
 
     devise :database_authenticatable, :registerable,
            :recoverable, :rememberable, :validatable,
@@ -28,7 +28,7 @@ module Users
 
     def confirmation_code_valid?(confirmation_code)
       return false if confirmation_code.blank?
-      return false if confirmation_code_sent_at.nil? || confirmation_code_sent_at < CONFIRMATION_CODE_EXPIRATION_TIME
+      return false if confirmation_code_sent_at.nil? || confirmation_code_sent_at < CONFIRMATION_CODE_EXPIRATION_PERIOD.ago
 
       self.confirmation_code == confirmation_code
     end
@@ -43,13 +43,15 @@ module Users
       )
       confirm
       true
+    rescue StandardError => e
+      Rails.logger.error("Failed to confirm user by code: #{e.message}")
     end
 
     private
 
     def can_resend_confirmation_code_email?
       return true if self.confirmation_code_sent_at.nil?
-      self.confirmation_code_sent_at < CONFIRMATION_CODE_EXPIRATION_TIME
+      self.confirmation_code_sent_at < CONFIRMATION_CODE_EXPIRATION_PERIOD.ago
     end
   end
 end

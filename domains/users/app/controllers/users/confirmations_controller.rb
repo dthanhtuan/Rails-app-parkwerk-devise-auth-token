@@ -49,7 +49,7 @@ module Users
     end
 
     def violate_cooldown_period?(user)
-      user.confirmation_sent_at.present? && user.confirmation_sent_at > COOL_DOWN_PERIOD
+      user.confirmation_sent_at.present? && user.confirmation_sent_at > COOL_DOWN_PERIOD.ago
     end
   end
 end
