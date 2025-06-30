@@ -6,7 +6,9 @@ Rails.application.routes.draw do
     post '/register', to: 'devise_token_auth/registrations#create', as: :user_registration
     post '/sign_in', to: 'devise_token_auth/sessions#create', as: :register
     delete '/sign_out', to: 'devise_token_auth/sessions#destroy', as: :destroy_user_session
+    # Email confirmation routes
     post '/verify-email', to: 'users/confirmations#confirm_registration', as: :confirm_registration
+    post '/resend-confirmation', to: 'users/confirmations#create', as: :resend_confirmation_instructions
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
@@ -15,8 +17,7 @@ Rails.application.routes.draw do
   draw :users
   draw :vouchers
 
-  resources :home, only: [ :index ]
-
+  resources :home, only: [:index]
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end

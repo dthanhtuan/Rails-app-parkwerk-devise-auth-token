@@ -39,6 +39,7 @@ gem "thruster", require: false
 
 gem "packwerk"
 gem "devise_token_auth"
+gem "rack-attack"
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
